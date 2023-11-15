@@ -2,8 +2,8 @@ from laboratoire import *
 import pytest
 from ihm import *
 def test_main():
-    labo = laboratoire()
-    enregistrer_arrivee(labo, 'Xavier', 'F305')
+   # labo = laboratoire()
+    """ enregistrer_arrivee(labo, 'Xavier', 'F305')
     enregistrer_arrivee(labo, 'Marc', 'F305')
     enregistrer_arrivee(labo, 'CAtherine', 'F8885')
     print(labo)
@@ -24,6 +24,10 @@ def test_main():
     assert bureau(labo, 'Xavier') == 'F305'
     enregistrer_arrivee(labo, 'Bobo', 'F305')
     #gerer_personnels_par_bureau_trié(labo)
-    creer_page_html(labo)
-
+    creer_page_html(labo) 
+    """
+   # save_to_json(labo, "testconsistence")
+    #labo = load_from_json("labo.json")
+    labo = load_from_csv("labo.csv")
+    creer_page_html_labo(labo)
 test_main()

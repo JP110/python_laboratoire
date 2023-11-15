@@ -1,4 +1,59 @@
- 
+import json
+from pathlib import Path  # Utilisé pour travailler avec les chemins de fichiers de manière plus propre
+import csv
+# ... (le reste de votre code)
+
+def save_to_json(labo, filename):
+    """Enregistre les données du laboratoire au format JSON.
+
+    Args:
+        labo (dict): Laboratoire à enregistrer
+        filename (str): Nom du fichier JSON de sortie
+    """
+    with open(filename, 'w') as json_file:
+        json.dump(labo, json_file, indent=4)
+
+def load_from_json(labo,filename):
+    """Charge les données du laboratoire depuis un fichier JSON.
+
+    Args:
+        filename (str): Nom du fichier JSON d'entrée
+
+    Returns:
+        dict: Laboratoire chargé depuis le fichier JSON
+    """
+    if Path(filename).exists():  # Vérifie si le fichier existe avant de tenter de le charger
+        with open(filename, 'r') as json_file:
+            loaded_labo = json.load(json_file)
+            labo.clear()
+            labo.update(loaded_labo)
+    else:
+        print(f"Le fichier {filename} n'existe pas. Création d'un nouveau laboratoire.")
+        return {}
+
+
+def load_from_csv(labo,filename):
+    """Charge les données du laboratoire depuis un fichier CSV.
+
+    Args:
+        filename (str): Nom du fichier CSV d'entrée
+
+    Returns:
+        dict: Laboratoire chargé depuis le fichier CSV
+    """
+    if Path(filename).exists():  # Vérifie si le fichier existe avant de tenter de le charger
+        with open(filename, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            loaded_labo = {}
+            for ligne in reader:
+                loaded_labo[ligne['Nom']] = ligne['Bureau']
+        labo.update(loaded_labo)
+    else:
+        print(f"Le fichier {filename} n'existe pas. Création d'un nouveau laboratoire.")
+        return {}
+
+
+
 '''
 Les opérations sur le laboratoire sans interactions avec l'utilisateur.
 Pas de input, pas de print.

@@ -24,9 +24,22 @@ def traiter_choix(choix, labo):
     if choix == 1:
         gerer_arrivee(labo)
     elif choix == 2:
-        nom = input("Nom ? ")
-        reponse = est_presente(labo, nom)
-        print('oui, présente' if reponse else 'non, inconnue') """
+        gerer_depart(labo)
+    elif choix == 3:    
+        gerer_modification_bureau(labo)
+    elif choix == 4:
+        gerer_modification_nom(labo)
+    elif choix == 5:
+        gerer_est_presente(labo)
+    elif choix == 6:
+        gerer_obtenir_bureau(labo)
+    elif choix == 7:
+        gerer_personnels_par_bureau_trié(labo)
+    elif choix == 8:
+        creer_page_html(labo)
+    elif choix == 0:
+        quitter_menu()
+  """
  
 def gerer_arrivee(labo):
         try:
@@ -89,13 +102,20 @@ def affichage_laboratoire_complet(labo):
 
 def gerer_personnels_par_bureau_trié(labo):
     affectations = personnels_par_bureau_trié(labo)
-    for bureau, noms in affectations.items():
-         print(bureau)
+    afficher_affectations(affectations)
+
+def afficher_affectations(affectation : dict):
+     for lieu, noms in affectation.items():
+         print(lieu)
          for nom in noms:
               print(f"- {nom}")
-              
-def creer_page_html(labo):
-    mon_labo = personnels_par_bureau_trié(labo)
+
+
+def creer_page_html_labo(labo):   
+     mon_labo = personnels_par_bureau_trié(labo) 
+     creer_page_html(mon_labo) 
+
+def creer_page_html(occupation:dict):
     # Commencer la construction de la page HTML
     page_html = "<html><body>"
 
@@ -105,9 +125,9 @@ def creer_page_html(labo):
     # Ajouter un tableau dans la page hml
     page_html += "<table border='1'><tr><th>Bureau</th><th>Personnels</th></tr>"
 
-    for bureau, noms in mon_labo.items():
+    for lieu, noms in occupation.items():
         # Ajouter une entrée de liste pour chaque paire bureau, nom
-        page_html += f"<tr><td>{bureau} </td><td>"
+        page_html += f"<tr><td>{lieu} </td><td>"
         page_html += f"{noms} "
         page_html += "</td></tr>"
 
@@ -121,6 +141,20 @@ def creer_page_html(labo):
     print("Fichier HTML créé avec succès.")
 
 
+
+
+def gerer_save_to_json(labo):
+     file = input("Path du fichier JSON? ")
+     save_to_json(labo, file)
+
+def gerer_load_from_json(labo):
+     file = input("Path du fichier JSON? ")
+     load_from_json(labo, file)
+
+def gerer_load_from_csv(labo):
+     file = input("Path du fichier CSV? ")
+     load_from_csv(labo, file)
+
 def main():
     labo = laboratoire()
     menu_laboratoire = menu()
@@ -132,6 +166,9 @@ def main():
     ajout_categorie(menu_laboratoire, 6, "Obtenir le bureau d\'une personne", lambda: gerer_obtenir_bureau(labo))
     ajout_categorie(menu_laboratoire, 7, "Liste de tous les personnels avec le bureau occupé", lambda: gerer_personnels_par_bureau_trié(labo))
     ajout_categorie(menu_laboratoire, 8, "Liste de tous les personnels avec le bureau occupé dans une page HTML", lambda: creer_page_html(labo))
+    ajout_categorie(menu_laboratoire, 9, "Sauvegarder JSON", lambda: gerer_save_to_json(labo))
+    ajout_categorie(menu_laboratoire, 10, "Importer JSON", lambda: gerer_load_from_json(labo))
+    ajout_categorie(menu_laboratoire, 11, "Importer fichier csv", lambda: gerer_load_from_csv(labo))
     ajout_categorie(menu_laboratoire, 0, "Quitter", lambda: quitter_menu())
 
     lancer_menu(menu_laboratoire)
